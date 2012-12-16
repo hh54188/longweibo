@@ -1,0 +1,103 @@
+
+<!DOCTYPE html>
+<html>
+	<title>长微博</title>
+	<head>
+		<!--UI-->
+		<link rel="stylesheet" type="text/css" href="js/fancybox/jquery.fancybox.css">
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+		<style type="text/css">
+			iframe {
+				width: 100%;
+				height: 100%;
+			}
+			#preview-img {
+				display: none;
+			}
+			.btn-wrap {
+				margin-top: 20px;
+			}
+			.btn-tool-group {
+				float: left;
+			}
+			.btn-primary-group {
+				float: right;
+			}		
+		</style>
+	</head>
+	<body>
+		<div id="ckeditor-wrap" class="container">
+			<h1>长微博</h1><span class="muted">JustStayInVegas#gmail.com (把#换成@)</span>
+			<hr>			
+			<textarea id="ckeditor1"  class="ckeditor1" name="editor1"></textarea>
+			<img id="preview-img" src="">
+			<div class="btn-wrap">
+				<div class="btn-group btn-tool-group">
+					<button id="convert-to-jt" class="btn btn-small">转化为简体</button>
+					<button id="convert-to-ft" class="btn btn-small">转化为繁体</button>
+				</div>
+				<div class="btn-group btn-primary-group">
+					<button class="btn btn-small" id="screen-shot">生成图片</button>
+				</div>
+			</div>			
+			<iframe style="opacity:0;" name="testFrame" id="img-iframe" src="iframe.html"></iframe>			
+		</div>
+		<!--core-->
+		<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+		<script type="text/javascript" src="js/ckeditor/ckeditor.js"></script>
+		<script type="text/javascript" src="js/ckeditor/adapters/jquery.js"></script>
+		<script type="text/javascript" src="js/editor.js"></script>		
+		<script type="text/javascript" src="js/fancybox/jquery.fancybox.pack.js"></script>
+		<script type="text/javascript" src="js/modernizr.custom.js"></script>
+		<script type="text/javascript">
+			if (window.location.href.indexOf('debug') < 0) {
+				Modernizr.load({
+				  test: Modernizr.canvas && Modernizr.canvastext,
+				  nope: 'js/error.js'
+				});
+			}
+
+			$(function () {
+				window.myEditor.init();
+				$('#preview-img').fancybox({
+					width: 940
+
+				});
+
+				window.setImgSrc = function (src) {
+					$('#preview-img').attr('src', src);
+					$.fancybox.open($('#preview-img'), {'title': "如需保存图片，请将鼠标移至图片，并单击鼠标右键‘图片另存为’"});
+				}			
+
+				var myScreenShot = function () {
+					var size = $('#cke_ckeditor1'), width = parseInt(size.css('width')), height = parseInt(size.css('height'));
+					var content = $('#cke_ckeditor1 iframe').contents().find('.cke_show_borders').clone();
+
+					//inner iframe;
+					var frame = $('#img-iframe');
+					frame.contents().find('.screenShot').remove();
+					frame.contents().find('body').css({
+						width: width + "px",
+						height: height + "px"
+					}).end().find('#container').show().empty().prepend(content.html());
+
+					var screenshot = window.frames["testFrame"].screenshot;
+					screenshot();				
+				}
+
+				//screen shot
+				$('#screen-shot').click(function () {
+					myScreenShot();
+				})
+
+				$('#convert-to-jt').click(function () {
+					myEditor.convertTojt();
+				})
+
+				$('#convert-to-ft').click(function () {
+					myEditor.convertToft();
+				})				
+			})
+		</script>		
+	</body>
+</html>
