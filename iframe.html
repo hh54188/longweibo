@@ -1,0 +1,23 @@
+
+<!DOCTYPE html>
+<html>
+	<head></head>
+	<!--core-->
+	<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+	<!--html2canvas-->
+	<script type="text/javascript" src="js/html2canvas/html2canvas.min.js"></script>
+	<script type="text/javascript" src="js/html2canvas/jquery.plugin.html2canvas.js"></script>
+	<script type="text/javascript">
+		var screenshot = function () {
+			$('#container').html2canvas();
+		}
+	</script>
+	<style type="text/css">
+		#container {
+			word-wrap:break-word;
+		}
+	</style>
+	<body>
+		<div id="container"></div>
+	</body>
+</html>
